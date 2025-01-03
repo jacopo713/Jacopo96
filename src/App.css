@@ -1,0 +1,224 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem; /* Ridotto il padding */
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 1em; /* Ridotto il padding */
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Stili aggiuntivi per il test di Raven */
+.raven-cell {
+  width: 80px; /* Ridotto da 150px */
+  height: 80px; /* Ridotto da 150px */
+  border: 1px solid #ccc;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem; /* Ridotto il padding */
+}
+
+.raven-cell svg {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.grid {
+  display: grid;
+  gap: 0.25rem; /* Ridotto il gap */
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.border {
+  border: 1px solid #ccc;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.hover\:bg-blue-50:hover {
+  background-color: rgba(239, 246, 255, 1);
+}
+
+.transition-colors {
+  transition: background-color 0.3s ease;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rounded-xl {
+  border-radius: 1rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem; /* Ridotto da 1.875rem */
+  line-height: 2rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.text-gray-600 {
+  color: #4b5563;
+}
+
+.mb-6 {
+  margin-bottom: 1rem; /* Ridotto da 1.5rem */
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.md\:grid-cols-2 {
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gap-6 {
+  gap: 1rem; /* Ridotto da 1.5rem */
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.text-xl {
+  font-size: 1.25rem; /* Ridotto da 1.5rem */
+  line-height: 1.75rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-3xl {
+  font-size: 1.5rem; /* Ridotto da 1.875rem */
+  line-height: 2rem;
+}
+
+.text-blue-600 {
+  color: #2563eb;
+}
+
+.text-green-600 {
+  color: #16a34a;
+}
+
+/* Media queries per dispositivi più piccoli */
+@media (max-width: 768px) {
+  .raven-cell {
+    width: 60px;
+    height: 60px;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .raven-cell {
+    width: 50px;
+    height: 50px;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
