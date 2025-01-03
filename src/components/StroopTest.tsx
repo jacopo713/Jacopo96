@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Clock, Brain } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Clock, Brain } from "lucide-react";
 
 const StroopTest = ({ onComplete }) => {
   // Stati principali
@@ -10,12 +10,12 @@ const StroopTest = ({ onComplete }) => {
   const [responseStartTime, setResponseStartTime] = useState(null);
 
   // Configurazione colori
-  const colors = ['rosso', 'blu', 'verde', 'arancione'];
+  const colors = ["rosso", "blu", "verde", "arancione"];
   const colorValues = {
-    rosso: '#EF4444',
-    blu: '#3B82F6',
-    verde: '#10B981',
-    arancione: '#F59E0B'
+    rosso: "#EF4444",
+    blu: "#3B82F6",
+    verde: "#10B981",
+    arancione: "#F59E0B",
   };
 
   // Generazione stimolo
@@ -23,8 +23,8 @@ const StroopTest = ({ onComplete }) => {
     const wordIndex = Math.floor(Math.random() * colors.length);
     const word = colors[wordIndex];
     let colorIndex;
-    
-    if (type === 'congruent') {
+
+    if (type === "congruent") {
       colorIndex = wordIndex;
     } else {
       do {
@@ -36,7 +36,7 @@ const StroopTest = ({ onComplete }) => {
       word,
       color: colors[colorIndex],
       type,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
   };
 
@@ -44,7 +44,7 @@ const StroopTest = ({ onComplete }) => {
   useEffect(() => {
     if (isRunning && timer > 0) {
       const interval = setInterval(() => {
-        setTimer(prev => {
+        setTimer((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
             setIsRunning(false);
@@ -75,7 +75,7 @@ const StroopTest = ({ onComplete }) => {
 
   // Generazione nuovo stimolo
   const generateNextStimulus = () => {
-    const types = ['congruent', 'incongruent'];
+    const types = ["congruent", "incongruent"];
     const type = types[Math.floor(Math.random() * types.length)];
     setCurrentStimulus(generateStimulus(type));
     setResponseStartTime(Date.now());
@@ -89,26 +89,28 @@ const StroopTest = ({ onComplete }) => {
       stimulus: currentStimulus,
       selectedColor,
       correct: selectedColor === currentStimulus.color,
-      reactionTime: Date.now() - responseStartTime
+      reactionTime: Date.now() - responseStartTime,
     };
 
-    setResponses(prev => [...prev, response]);
+    setResponses((prev) => [...prev, response]);
     generateNextStimulus();
   };
 
   // Calcolo risultati finali
   const calculateResults = () => {
-    const correct = responses.filter(r => r.correct).length;
+    const correct = responses.filter((r) => r.correct).length;
     const accuracy = correct / responses.length;
-    const avgTime = responses.reduce((acc, r) => acc + r.reactionTime, 0) / responses.length;
-    const interferenceScore = responses
-      .filter(r => r.stimulus.type === 'incongruent')
-      .reduce((acc, r) => acc + r.reactionTime, 0) / 
-      responses.filter(r => r.stimulus.type === 'incongruent').length -
+    const avgTime =
+      responses.reduce((acc, r) => acc + r.reactionTime, 0) / responses.length;
+    const interferenceScore =
       responses
-      .filter(r => r.stimulus.type === 'congruent')
-      .reduce((acc, r) => acc + r.reactionTime, 0) / 
-      responses.filter(r => r.stimulus.type === 'congruent').length;
+        .filter((r) => r.stimulus.type === "incongruent")
+        .reduce((acc, r) => acc + r.reactionTime, 0) /
+        responses.filter((r) => r.stimulus.type === "incongruent").length -
+      responses
+        .filter((r) => r.stimulus.type === "congruent")
+        .reduce((acc, r) => acc + r.reactionTime, 0) /
+        responses.filter((r) => r.stimulus.type === "congruent").length;
 
     return {
       score: Math.round(accuracy * 100),
@@ -117,7 +119,7 @@ const StroopTest = ({ onComplete }) => {
       totalResponses: responses.length,
       correctResponses: correct,
       interferenceScore,
-      responsesPerMinute: (responses.length / 1).toFixed(1) // 1 minuto totale
+      responsesPerMinute: (responses.length / 1).toFixed(1), // 1 minuto totale
     };
   };
 
@@ -125,7 +127,7 @@ const StroopTest = ({ onComplete }) => {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -147,7 +149,7 @@ const StroopTest = ({ onComplete }) => {
         <>
           {/* Display parola */}
           <div className="text-center py-12 mb-6">
-            <span 
+            <span
               className="text-4xl font-bold"
               style={{ color: colorValues[currentStimulus.color] }}
             >
@@ -157,7 +159,7 @@ const StroopTest = ({ onComplete }) => {
 
           {/* Pulsanti risposta */}
           <div className="grid grid-cols-2 gap-4">
-            {colors.map(color => (
+            {colors.map((color) => (
               <button
                 key={color}
                 onClick={() => handleResponse(color)}
@@ -173,8 +175,8 @@ const StroopTest = ({ onComplete }) => {
 
       {/* Statistiche in tempo reale */}
       <div className="mt-6 text-sm text-gray-600">
-        Risposte: {responses.length} | 
-        Corrette: {responses.filter(r => r.correct).length}
+        Risposte: {responses.length} | Corrette:{" "}
+        {responses.filter((r) => r.correct).length}
       </div>
     </div>
   );

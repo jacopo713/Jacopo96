@@ -1,12 +1,12 @@
-import RavenMatrixGenerator from './RavenMatrixGenerator';
-import CognitiveAnalysisEngine from './CognitiveAnalysisEngine';
+import RavenMatrixGenerator from "./RavenMatrixGenerator";
+import CognitiveAnalysisEngine from "./CognitiveAnalysisEngine";
 
 class IntegratedRavenSystem {
   constructor() {
     try {
       this.matrixGenerator = new RavenMatrixGenerator();
       this.analysisEngine = new CognitiveAnalysisEngine();
-      
+
       this.currentLevel = 1;
       this.maxLevels = 3;
       this.questionsPerLevel = 7;
@@ -16,13 +16,13 @@ class IntegratedRavenSystem {
         adaptiveDifficulty: true,
         minCorrectToProgress: 0.7,
         minCorrectToRegress: 0.4,
-        maxAverageTime: 30000
+        maxAverageTime: 30000,
       };
 
-      console.log('Sistema Raven inizializzato correttamente');
+      console.log("Sistema Raven inizializzato correttamente");
     } catch (error) {
-      console.error('Errore durante l\'inizializzazione:', error);
-      throw new Error('Inizializzazione del sistema fallita');
+      console.error("Errore durante l'inizializzazione:", error);
+      throw new Error("Inizializzazione del sistema fallita");
     }
   }
 
@@ -33,11 +33,11 @@ class IntegratedRavenSystem {
         questions,
         startTime: Date.now(),
         responses: [],
-        currentQuestionIndex: 0
+        currentQuestionIndex: 0,
       };
     } catch (error) {
-      console.error('Errore avvio test:', error);
-      throw new Error('Impossibile avviare il test');
+      console.error("Errore avvio test:", error);
+      throw new Error("Impossibile avviare il test");
     }
   }
 
@@ -54,18 +54,20 @@ class IntegratedRavenSystem {
             level,
             matrix,
             timeStarted: null,
-            timeEnded: null
+            timeEnded: null,
           });
         } catch (error) {
           console.error(`Errore generazione matrice L${level}Q${i}:`, error);
           if (level > 1) {
-            const fallbackMatrix = await this.matrixGenerator.generateMatrix(level - 1);
+            const fallbackMatrix = await this.matrixGenerator.generateMatrix(
+              level - 1,
+            );
             questions.push({
               id: `Q${questionId++}`,
               level: level - 1,
               matrix: fallbackMatrix,
               timeStarted: null,
-              timeEnded: null
+              timeEnded: null,
             });
           }
         }
@@ -77,7 +79,7 @@ class IntegratedRavenSystem {
 
   processAnswer(test, questionIndex, answer) {
     if (!test || questionIndex >= test.questions.length) {
-      throw new Error('Parametri non validi');
+      throw new Error("Parametri non validi");
     }
 
     const question = test.questions[questionIndex];
@@ -87,37 +89,42 @@ class IntegratedRavenSystem {
       level: question.level,
       answer,
       isCorrect,
-      timeSpent: Date.now() - (question.timeStarted || Date.now())
+      timeSpent: Date.now() - (question.timeStarted || Date.now()),
     };
 
     if (isCorrect) {
-      console.log('Risposta corretta!');
+      console.log("Risposta corretta!");
     } else {
-      console.log('Risposta errata. La risposta corretta era:', question.matrix.correctAnswer);
+      console.log(
+        "Risposta errata. La risposta corretta era:",
+        question.matrix.correctAnswer,
+      );
     }
 
     return {
       response,
-      shouldContinue: questionIndex + 1 < test.questions.length
+      shouldContinue: questionIndex + 1 < test.questions.length,
     };
   }
 
   generateFinalReport(test) {
     if (!test || !test.responses) {
-      throw new Error('Dati del test non validi');
+      throw new Error("Dati del test non validi");
     }
 
-    const correctAnswers = test.responses.filter(r => r.isCorrect).length;
+    const correctAnswers = test.responses.filter((r) => r.isCorrect).length;
     const accuracy = correctAnswers / test.responses.length;
-    const averageTime = test.responses.reduce((acc, r) => acc + r.timeSpent, 0) / test.responses.length;
+    const averageTime =
+      test.responses.reduce((acc, r) => acc + r.timeSpent, 0) /
+      test.responses.length;
 
     return {
       totalQuestions: test.responses.length,
       correctAnswers,
       accuracy,
       averageTimePerQuestion: averageTime,
-      maxLevelReached: Math.max(...test.responses.map(r => r.level)),
-      timestamp: Date.now()
+      maxLevelReached: Math.max(...test.responses.map((r) => r.level)),
+      timestamp: Date.now(),
     };
   }
 }

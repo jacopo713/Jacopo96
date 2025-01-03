@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Clock, Brain, AlertCircle, Award, Undo } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Clock, Brain, AlertCircle, Award, Undo } from "lucide-react";
 
 const CONFIG = {
   GRID_SIZE: 16,
@@ -15,8 +15,8 @@ const CONFIG = {
     { score: 800, percentile: 75 },
     { score: 1000, percentile: 90 },
     { score: 1200, percentile: 95 },
-    { score: 1500, percentile: 99 }
-  ]
+    { score: 1500, percentile: 99 },
+  ],
 };
 
 const ShortTermMemoryTest = ({ onComplete }) => {
@@ -30,19 +30,19 @@ const ShortTermMemoryTest = ({ onComplete }) => {
     score: 0,
     timeElapsed: 0,
     finalResult: null,
-    sequenceLength: CONFIG.BASE_SEQUENCE_LENGTH
+    sequenceLength: CONFIG.BASE_SEQUENCE_LENGTH,
   });
 
   const [sequenceState, setSequenceState] = useState({
     sequence: [],
     userSequence: [],
     isPlaying: false,
-    activeIndex: null
+    activeIndex: null,
   });
 
   const [feedback, setFeedback] = useState({
-    message: '',
-    type: 'info'
+    message: "",
+    type: "info",
   });
 
   const calculatePercentile = (score) => {
@@ -64,13 +64,14 @@ const ShortTermMemoryTest = ({ onComplete }) => {
 
   const calculateFinalResult = useCallback((score, totalTime) => {
     const averageTimePerTest = totalTime / CONFIG.TOTAL_TESTS;
-    const normalizedScore = score * (1 + (30 - Math.min(30, averageTimePerTest)) / 30);
+    const normalizedScore =
+      score * (1 + (30 - Math.min(30, averageTimePerTest)) / 30);
     const percentile = calculatePercentile(normalizedScore);
 
     return {
       score: Math.round(normalizedScore),
       percentile,
-      evaluation: getEvaluation(percentile)
+      evaluation: getEvaluation(percentile),
     };
   }, []);
 
@@ -90,35 +91,35 @@ const ShortTermMemoryTest = ({ onComplete }) => {
 
   const playSequence = useCallback((sequence) => {
     let step = 0;
-    setSequenceState(prev => ({
+    setSequenceState((prev) => ({
       ...prev,
       isPlaying: true,
-      activeIndex: null
+      activeIndex: null,
     }));
 
     const playStep = () => {
       if (step >= sequence.length) {
-        setSequenceState(prev => ({
+        setSequenceState((prev) => ({
           ...prev,
           isPlaying: false,
-          activeIndex: null
+          activeIndex: null,
         }));
         setFeedback({
-          message: 'Riproduci la sequenza!',
-          type: 'info'
+          message: "Riproduci la sequenza!",
+          type: "info",
         });
         return;
       }
 
-      setSequenceState(prev => ({
+      setSequenceState((prev) => ({
         ...prev,
-        activeIndex: sequence[step]
+        activeIndex: sequence[step],
       }));
 
       timerRef.current = setTimeout(() => {
-        setSequenceState(prev => ({
+        setSequenceState((prev) => ({
           ...prev,
-          activeIndex: null
+          activeIndex: null,
         }));
 
         timerRef.current = setTimeout(() => {
@@ -131,69 +132,75 @@ const ShortTermMemoryTest = ({ onComplete }) => {
     playStep();
   }, []);
 
-  const handleCellClick = useCallback((index) => {
-    if (!gameState.isActive || sequenceState.isPlaying) return;
+  const handleCellClick = useCallback(
+    (index) => {
+      if (!gameState.isActive || sequenceState.isPlaying) return;
 
-    setSequenceState(prev => ({
-      ...prev,
-      activeIndex: index,
-      userSequence: [...prev.userSequence, index]
-    }));
-
-    setTimeout(() => {
-      setSequenceState(prev => ({
+      setSequenceState((prev) => ({
         ...prev,
-        activeIndex: null
+        activeIndex: index,
+        userSequence: [...prev.userSequence, index],
       }));
-    }, CONFIG.FEEDBACK_DURATION);
-  }, [gameState.isActive, sequenceState.isPlaying]);
+
+      setTimeout(() => {
+        setSequenceState((prev) => ({
+          ...prev,
+          activeIndex: null,
+        }));
+      }, CONFIG.FEEDBACK_DURATION);
+    },
+    [gameState.isActive, sequenceState.isPlaying],
+  );
 
   const undoLastClick = useCallback(() => {
     if (sequenceState.userSequence.length > 0) {
-      setSequenceState(prev => ({
+      setSequenceState((prev) => ({
         ...prev,
-        userSequence: prev.userSequence.slice(0, -1)
+        userSequence: prev.userSequence.slice(0, -1),
       }));
     }
   }, [sequenceState.userSequence]);
 
   const verifySequence = useCallback(() => {
     const isCorrect = sequenceState.sequence.every(
-      (val, idx) => val === sequenceState.userSequence[idx]
+      (val, idx) => val === sequenceState.userSequence[idx],
     );
 
     if (isCorrect) {
       const nextTest = gameState.currentTest + 1;
       const newSequenceLength = gameState.sequenceLength + 1;
 
-      setGameState(prev => ({
+      setGameState((prev) => ({
         ...prev,
         score: prev.score + 100,
         currentTest: nextTest,
-        sequenceLength: newSequenceLength
+        sequenceLength: newSequenceLength,
       }));
 
       if (nextTest >= CONFIG.TOTAL_TESTS) {
-        const finalResult = calculateFinalResult(gameState.score + 100, gameState.timeElapsed);
-        setGameState(prev => ({
+        const finalResult = calculateFinalResult(
+          gameState.score + 100,
+          gameState.timeElapsed,
+        );
+        setGameState((prev) => ({
           ...prev,
           isActive: false,
-          finalResult
+          finalResult,
         }));
         if (onComplete) {
           onComplete(finalResult);
         }
         setFeedback({
           message: `Test completato! ${finalResult.evaluation}`,
-          type: 'success'
+          type: "success",
         });
       } else {
         const nextSequence = generateSequence(newSequenceLength);
-        setSequenceState(prev => ({
+        setSequenceState((prev) => ({
           ...prev,
           sequence: nextSequence,
           userSequence: [],
-          isPlaying: false
+          isPlaying: false,
         }));
         setTimeout(() => playSequence(nextSequence), 1000);
       }
@@ -201,35 +208,45 @@ const ShortTermMemoryTest = ({ onComplete }) => {
       const nextTest = gameState.currentTest + 1;
 
       if (nextTest >= CONFIG.TOTAL_TESTS) {
-        const finalResult = calculateFinalResult(gameState.score, gameState.timeElapsed);
-        setGameState(prev => ({
+        const finalResult = calculateFinalResult(
+          gameState.score,
+          gameState.timeElapsed,
+        );
+        setGameState((prev) => ({
           ...prev,
           isActive: false,
-          finalResult
+          finalResult,
         }));
         if (onComplete) {
           onComplete(finalResult);
         }
         setFeedback({
           message: `Test completato! ${finalResult.evaluation}`,
-          type: 'info'
+          type: "info",
         });
       } else {
         const nextSequence = generateSequence(gameState.sequenceLength);
-        setSequenceState(prev => ({
+        setSequenceState((prev) => ({
           ...prev,
           sequence: nextSequence,
           userSequence: [],
-          isPlaying: false
+          isPlaying: false,
         }));
-        setGameState(prev => ({
+        setGameState((prev) => ({
           ...prev,
-          currentTest: nextTest
+          currentTest: nextTest,
         }));
         setTimeout(() => playSequence(nextSequence), 1000);
       }
     }
-  }, [gameState, sequenceState, generateSequence, playSequence, calculateFinalResult, onComplete]);
+  }, [
+    gameState,
+    sequenceState,
+    generateSequence,
+    playSequence,
+    calculateFinalResult,
+    onComplete,
+  ]);
 
   const startTest = useCallback(() => {
     const initialSequence = generateSequence(CONFIG.BASE_SEQUENCE_LENGTH);
@@ -239,17 +256,17 @@ const ShortTermMemoryTest = ({ onComplete }) => {
       score: 0,
       timeElapsed: 0,
       finalResult: null,
-      sequenceLength: CONFIG.BASE_SEQUENCE_LENGTH
+      sequenceLength: CONFIG.BASE_SEQUENCE_LENGTH,
     });
     setSequenceState({
       sequence: initialSequence,
       userSequence: [],
       isPlaying: false,
-      activeIndex: null
+      activeIndex: null,
     });
     setFeedback({
-      message: 'Osserva la sequenza...',
-      type: 'info'
+      message: "Osserva la sequenza...",
+      type: "info",
     });
     setTimeout(() => playSequence(initialSequence), 500);
   }, [generateSequence, playSequence]);
@@ -257,9 +274,9 @@ const ShortTermMemoryTest = ({ onComplete }) => {
   useEffect(() => {
     if (gameState.isActive) {
       gameTimerRef.current = setInterval(() => {
-        setGameState(prev => ({
+        setGameState((prev) => ({
           ...prev,
-          timeElapsed: prev.timeElapsed + 1
+          timeElapsed: prev.timeElapsed + 1,
         }));
       }, 1000);
     }
@@ -293,12 +310,14 @@ const ShortTermMemoryTest = ({ onComplete }) => {
       </div>
 
       {feedback.message && (
-        <div className={`
+        <div
+          className={`
           mb-4 p-3 rounded-lg flex items-center gap-2
-          ${feedback.type === 'success' ? 'bg-green-100 text-green-700' : ''}
-          ${feedback.type === 'error' ? 'bg-red-100 text-red-700' : ''}
-          ${feedback.type === 'info' ? 'bg-blue-100 text-blue-700' : ''}
-        `}>
+          ${feedback.type === "success" ? "bg-green-100 text-green-700" : ""}
+          ${feedback.type === "error" ? "bg-red-100 text-red-700" : ""}
+          ${feedback.type === "info" ? "bg-blue-100 text-blue-700" : ""}
+        `}
+        >
           <AlertCircle className="w-5 h-5" />
           {feedback.message}
         </div>
@@ -313,15 +332,18 @@ const ShortTermMemoryTest = ({ onComplete }) => {
             className={`
               w-16 h-16 rounded-lg 
               transition-all duration-150 ease-in-out
-              ${sequenceState.activeIndex === index 
-                ? 'bg-blue-500 scale-95' 
-                : !sequenceState.isPlaying && sequenceState.userSequence.includes(index)
-                ? 'bg-green-500'
-                : 'bg-gray-200 hover:bg-gray-300'
+              ${
+                sequenceState.activeIndex === index
+                  ? "bg-blue-500 scale-95"
+                  : !sequenceState.isPlaying &&
+                      sequenceState.userSequence.includes(index)
+                    ? "bg-green-500"
+                    : "bg-gray-200 hover:bg-gray-300"
               }
-              ${(!gameState.isActive || sequenceState.isPlaying) 
-                ? 'cursor-not-allowed opacity-80' 
-                : 'cursor-pointer'
+              ${
+                !gameState.isActive || sequenceState.isPlaying
+                  ? "cursor-not-allowed opacity-80"
+                  : "cursor-pointer"
               }
               transform active:scale-95
             `}
@@ -339,13 +361,16 @@ const ShortTermMemoryTest = ({ onComplete }) => {
           </div>
           <div className="space-y-2">
             <p className="text-lg">
-              <span className="font-semibold">Punteggio:</span> {gameState.finalResult.score}
+              <span className="font-semibold">Punteggio:</span>{" "}
+              {gameState.finalResult.score}
             </p>
             <p className="text-lg">
-              <span className="font-semibold">Percentile:</span> {gameState.finalResult.percentile}°
+              <span className="font-semibold">Percentile:</span>{" "}
+              {gameState.finalResult.percentile}°
             </p>
             <p className="text-lg">
-              <span className="font-semibold">Valutazione:</span> {gameState.finalResult.evaluation}
+              <span className="font-semibold">Valutazione:</span>{" "}
+              {gameState.finalResult.evaluation}
             </p>
           </div>
         </div>
@@ -368,9 +393,10 @@ const ShortTermMemoryTest = ({ onComplete }) => {
                 className={`
                   px-6 py-2 bg-gray-600 text-white rounded-lg 
                   hover:bg-gray-700 transition-colors
-                  ${sequenceState.userSequence.length === 0 
-                    ? 'cursor-not-allowed opacity-80' 
-                    : 'cursor-pointer'
+                  ${
+                    sequenceState.userSequence.length === 0
+                      ? "cursor-not-allowed opacity-80"
+                      : "cursor-pointer"
                   }
                 `}
               >
@@ -378,12 +404,17 @@ const ShortTermMemoryTest = ({ onComplete }) => {
               </button>
               <button
                 onClick={verifySequence}
-                disabled={sequenceState.userSequence.length !== sequenceState.sequence.length}
+                disabled={
+                  sequenceState.userSequence.length !==
+                  sequenceState.sequence.length
+                }
                 className={`
                   px-6 py-2 rounded-lg transition-colors
-                  ${sequenceState.userSequence.length === sequenceState.sequence.length
-                    ? 'bg-green-600 hover:bg-green-700 text-white'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  ${
+                    sequenceState.userSequence.length ===
+                    sequenceState.sequence.length
+                      ? "bg-green-600 hover:bg-green-700 text-white"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
                   }
                 `}
               >

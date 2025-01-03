@@ -1,5 +1,5 @@
 // Sistema Ottimizzato di Analisi delle Prestazioni Cognitive
-import { mean } from 'lodash';
+import { mean } from "lodash";
 
 class CognitiveAnalysisEngine {
   constructor() {
@@ -14,9 +14,9 @@ class CognitiveAnalysisEngine {
         quantitativo: 1.4,
         astratto: 1.5,
         critico: 1.2,
-        sistemico: 1.3
+        sistemico: 1.3,
       },
-      
+
       // Tempi di risposta attesi (ms)
       expectedResponseTimes: {
         deduttivo: 45000,
@@ -26,14 +26,14 @@ class CognitiveAnalysisEngine {
         quantitativo: 50000,
         astratto: 45000,
         critico: 60000,
-        sistemico: 55000
+        sistemico: 55000,
       },
-      
+
       // Pesi ribilanciati senza consistenza
       evaluationWeights: {
-        accuracy: 0.7,    // Aumentato per compensare
-        speed: 0.3       // Ribilanciato per completare
-      }
+        accuracy: 0.7, // Aumentato per compensare
+        speed: 0.3, // Ribilanciato per completare
+      },
     };
 
     // Parametri QI
@@ -41,7 +41,7 @@ class CognitiveAnalysisEngine {
       mean: 100,
       standardDeviation: 15,
       minScore: 40,
-      maxScore: 160
+      maxScore: 160,
     };
   }
 
@@ -49,66 +49,78 @@ class CognitiveAnalysisEngine {
   analyzePerformance(responses, category) {
     try {
       this.validateInputData(responses);
-      
-      const accuracy = this.calculateAccuracy(responses.answers, responses.correctAnswers);
-      const speedMetrics = this.analyzeResponseTimes(responses.responseTimes, category);
-      
+
+      const accuracy = this.calculateAccuracy(
+        responses.answers,
+        responses.correctAnswers,
+      );
+      const speedMetrics = this.analyzeResponseTimes(
+        responses.responseTimes,
+        category,
+      );
+
       const rawScore = this.calculateRawScore({
         accuracy,
         speedMetrics,
-        categoryType: category
+        categoryType: category,
       });
 
       return this.normalizeToIQ(rawScore);
     } catch (error) {
-      console.error('Errore analisi prestazioni:', error);
+      console.error("Errore analisi prestazioni:", error);
       return this.generateFallbackScore();
     }
   }
 
   // Validazione input
   validateInputData(responses) {
-    if (!responses.answers || !responses.responseTimes || !responses.correctAnswers) {
-      throw new Error('Dati di risposta incompleti');
+    if (
+      !responses.answers ||
+      !responses.responseTimes ||
+      !responses.correctAnswers
+    ) {
+      throw new Error("Dati di risposta incompleti");
     }
     if (responses.answers.length !== responses.correctAnswers.length) {
-      throw new Error('Mancata corrispondenza tra risposte e soluzioni');
+      throw new Error("Mancata corrispondenza tra risposte e soluzioni");
     }
   }
 
   // Calcolo accuratezza
   calculateAccuracy(answers, correctAnswers) {
     if (answers.length === 0) return 0;
-    const correctCount = answers.filter((answer, index) => 
-      answer === correctAnswers[index]
+    const correctCount = answers.filter(
+      (answer, index) => answer === correctAnswers[index],
     ).length;
     return correctCount / answers.length;
   }
 
   // Analisi tempi di risposta ottimizzata
   analyzeResponseTimes(responseTimes, categoryType) {
-    const expectedTime = this.baselineMetrics.expectedResponseTimes[categoryType];
+    const expectedTime =
+      this.baselineMetrics.expectedResponseTimes[categoryType];
     const avgTime = mean(responseTimes);
-    
+
     // Calcolo speedScore con funzione sigmoidale
     const speedRatio = avgTime / expectedTime;
     const speedScore = 1 / (1 + Math.exp(-(1 - speedRatio)));
 
     return {
       averageTime: avgTime,
-      speedScore: speedScore
+      speedScore: speedScore,
     };
   }
 
   // Calcolo punteggio grezzo ribilanciato
   calculateRawScore({ accuracy, speedMetrics, categoryType }) {
     const weights = this.baselineMetrics.evaluationWeights;
-    const categoryWeight = this.baselineMetrics.responseTimeWeights[categoryType];
+    const categoryWeight =
+      this.baselineMetrics.responseTimeWeights[categoryType];
 
-    const rawScore = (
-      Math.pow(accuracy, 1.2) * weights.accuracy +
-      speedMetrics.speedScore * weights.speed
-    ) * Math.sqrt(categoryWeight);
+    const rawScore =
+      (Math.pow(accuracy, 1.2) * weights.accuracy +
+        speedMetrics.speedScore * weights.speed) *
+      Math.sqrt(categoryWeight);
 
     return Math.max(0, Math.min(1, rawScore));
   }
@@ -116,12 +128,12 @@ class CognitiveAnalysisEngine {
   // Normalizzazione QI ottimizzata
   normalizeToIQ(rawScore) {
     const { mean, standardDeviation, minScore, maxScore } = this.iqParams;
-    
+
     // Trasformazione sigmoidale
     const normalized = 1 / (1 + Math.exp(-6 * (rawScore - 0.5)));
     const zScore = (normalized - 0.5) * 2;
-    
-    const iqScore = Math.round(mean + (zScore * standardDeviation));
+
+    const iqScore = Math.round(mean + zScore * standardDeviation);
     return Math.max(minScore, Math.min(maxScore, iqScore));
   }
 
@@ -129,20 +141,26 @@ class CognitiveAnalysisEngine {
   generateDetailedReport(responses, categoryType) {
     try {
       const performance = this.analyzePerformance(responses, categoryType);
-      const speedMetrics = this.analyzeResponseTimes(responses.responseTimes, categoryType);
+      const speedMetrics = this.analyzeResponseTimes(
+        responses.responseTimes,
+        categoryType,
+      );
 
       return {
         category: categoryType,
         iqScore: performance,
         details: {
-          accuracy: this.calculateAccuracy(responses.answers, responses.correctAnswers),
+          accuracy: this.calculateAccuracy(
+            responses.answers,
+            responses.correctAnswers,
+          ),
           averageResponseTime: speedMetrics.averageTime,
-          speedScore: speedMetrics.speedScore
+          speedScore: speedMetrics.speedScore,
         },
-        interpretation: this.interpretResults(performance)
+        interpretation: this.interpretResults(performance),
       };
     } catch (error) {
-      console.error('Errore generazione report:', error);
+      console.error("Errore generazione report:", error);
       return this.generateFallbackReport(responses, categoryType);
     }
   }
@@ -159,16 +177,19 @@ class CognitiveAnalysisEngine {
 
   // Report di fallback
   generateFallbackReport(responses, categoryType) {
-    const accuracy = this.calculateAccuracy(responses.answers, responses.correctAnswers);
+    const accuracy = this.calculateAccuracy(
+      responses.answers,
+      responses.correctAnswers,
+    );
     return {
       category: categoryType,
       iqScore: 100,
       details: {
         accuracy: accuracy,
         averageResponseTime: mean(responses.responseTimes),
-        speedScore: 0.5
+        speedScore: 0.5,
       },
-      interpretation: 'Nella media'
+      interpretation: "Nella media",
     };
   }
 

@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
-import { Brain, Eye, Activity, Target, Music } from 'lucide-react'; 
-import RavenTest from './RavenTest';
-import EyeHandTest from './EyeHandTest';
-import StroopTest from './StroopTest';
-import ShortTermMemoryTest from './ShortTermMemoryTest';
-import SpeedReadingTrainer from './SpeedReadingTrainer';
-import RhythmTest from './RhythmTest';
+import React, { useState } from "react";
+import { Brain, Eye, Activity, Target, Music } from "lucide-react";
+import RavenTest from "./RavenTest";
+import EyeHandTest from "./EyeHandTest";
+import StroopTest from "./StroopTest";
+import ShortTermMemoryTest from "./ShortTermMemoryTest";
+import SpeedReadingTrainer from "./SpeedReadingTrainer";
+import RhythmTest from "./RhythmTest";
 
 const TestIQ = () => {
-  const [phase, setPhase] = useState<'intro' | 'raven' | 'coordination' | 'attention' | 'memory' | 'speedReading' | 'rhythm' | 'results'>('intro');
+  const [phase, setPhase] = useState<
+    | "intro"
+    | "raven"
+    | "coordination"
+    | "attention"
+    | "memory"
+    | "speedReading"
+    | "rhythm"
+    | "results"
+  >("intro");
   const [results, setResults] = useState<any>({
     raven: null,
     coordination: null,
@@ -19,50 +28,50 @@ const TestIQ = () => {
   });
 
   const startTesting = () => {
-    setPhase('raven');
+    setPhase("raven");
   };
 
   const handleRavenComplete = (ravenResults: any) => {
-    console.log('Completamento Raven:', ravenResults);
-    setResults(prev => ({ ...prev, raven: ravenResults }));
-    setPhase('coordination');
+    console.log("Completamento Raven:", ravenResults);
+    setResults((prev) => ({ ...prev, raven: ravenResults }));
+    setPhase("coordination");
   };
 
   const handleCoordinationComplete = (coordResults: any) => {
-    console.log('Completamento Coordinazione:', coordResults);
-    setResults(prev => ({ ...prev, coordination: coordResults }));
-    setPhase('attention');
+    console.log("Completamento Coordinazione:", coordResults);
+    setResults((prev) => ({ ...prev, coordination: coordResults }));
+    setPhase("attention");
   };
 
   const handleAttentionComplete = (attentionResults: any) => {
-    console.log('Completamento Attenzione:', attentionResults);
-    setResults(prev => ({ ...prev, attention: attentionResults }));
-    setPhase('memory');
+    console.log("Completamento Attenzione:", attentionResults);
+    setResults((prev) => ({ ...prev, attention: attentionResults }));
+    setPhase("memory");
   };
 
   const handleMemoryComplete = (memoryResults: any) => {
-    console.log('Completamento Memoria:', memoryResults);
-    setResults(prev => ({
+    console.log("Completamento Memoria:", memoryResults);
+    setResults((prev) => ({
       ...prev,
       memory: {
         ...memoryResults,
         score: memoryResults.score || 0,
-        accuracy: (memoryResults.percentile || 0) / 100
-      }
+        accuracy: (memoryResults.percentile || 0) / 100,
+      },
     }));
-    setPhase('speedReading');
+    setPhase("speedReading");
   };
 
   const handleSpeedReadingComplete = (speedReadingResults: any) => {
-    console.log('Completamento Lettura Veloce:', speedReadingResults);
-    setResults(prev => ({ ...prev, speedReading: speedReadingResults }));
-    setPhase('rhythm');
+    console.log("Completamento Lettura Veloce:", speedReadingResults);
+    setResults((prev) => ({ ...prev, speedReading: speedReadingResults }));
+    setPhase("rhythm");
   };
 
   const handleRhythmComplete = (rhythmResults: any) => {
-    console.log('Completamento Ritmo:', rhythmResults);
-    setResults(prev => ({ ...prev, rhythm: rhythmResults }));
-    setPhase('results');
+    console.log("Completamento Ritmo:", rhythmResults);
+    setResults((prev) => ({ ...prev, rhythm: rhythmResults }));
+    setPhase("results");
   };
 
   const renderIntro = () => (
@@ -71,7 +80,7 @@ const TestIQ = () => {
         <Brain className="w-6 h-6" />
         <h1 className="text-2xl font-bold">Valutazione Cognitiva Completa</h1>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="p-4 border rounded-lg">
           <div className="flex items-center gap-2 mb-2">
@@ -82,7 +91,7 @@ const TestIQ = () => {
             Valuta il ragionamento astratto e l'intelligenza fluida
           </p>
         </div>
-        
+
         <div className="p-4 border rounded-lg">
           <div className="flex items-center gap-2 mb-2">
             <Eye className="w-5 h-5 text-green-600" />
@@ -92,7 +101,7 @@ const TestIQ = () => {
             Misura la precisione e velocità dei movimenti
           </p>
         </div>
-        
+
         <div className="p-4 border rounded-lg">
           <div className="flex items-center gap-2 mb-2">
             <Activity className="w-5 h-5 text-purple-600" />
@@ -146,7 +155,7 @@ const TestIQ = () => {
   const renderResults = () => (
     <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
       <h2 className="text-2xl font-bold mb-6">Report Cognitivo Completo</h2>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Raven */}
         <div className="p-4 border rounded-lg">
@@ -155,7 +164,7 @@ const TestIQ = () => {
             {results.raven?.score ?? 0}
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div 
+            <div
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(results.raven?.accuracy ?? 0) * 100}%` }}
             />
@@ -169,9 +178,11 @@ const TestIQ = () => {
             {results.coordination?.score ?? 0}
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div 
+            <div
               className="bg-green-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${(results.coordination?.accuracy ?? 0) * 100}%` }}
+              style={{
+                width: `${(results.coordination?.accuracy ?? 0) * 100}%`,
+              }}
             />
           </div>
         </div>
@@ -183,7 +194,7 @@ const TestIQ = () => {
             {results.attention?.score ?? 0}
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div 
+            <div
               className="bg-purple-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(results.attention?.accuracy ?? 0) * 100}%` }}
             />
@@ -197,7 +208,7 @@ const TestIQ = () => {
             {results.memory?.score ?? 0}
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div 
+            <div
               className="bg-yellow-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(results.memory?.accuracy ?? 0) * 100}%` }}
             />
@@ -211,7 +222,7 @@ const TestIQ = () => {
             {results.speedReading?.wpm ?? 0} WPM
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div 
+            <div
               className="bg-red-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(results.speedReading?.wpm ?? 0) / 10}%` }}
             />
@@ -225,7 +236,7 @@ const TestIQ = () => {
             {results.rhythm?.precision ?? 0}%
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-            <div 
+            <div
               className="bg-indigo-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${results.rhythm?.precision ?? 0}%` }}
             />
@@ -244,21 +255,21 @@ const TestIQ = () => {
 
   const renderCurrentPhase = () => {
     switch (phase) {
-      case 'intro':
+      case "intro":
         return renderIntro();
-      case 'raven':
+      case "raven":
         return <RavenTest onComplete={handleRavenComplete} />;
-      case 'coordination':
+      case "coordination":
         return <EyeHandTest onComplete={handleCoordinationComplete} />;
-      case 'attention':
+      case "attention":
         return <StroopTest onComplete={handleAttentionComplete} />;
-      case 'memory':
+      case "memory":
         return <ShortTermMemoryTest onComplete={handleMemoryComplete} />;
-      case 'speedReading':
+      case "speedReading":
         return <SpeedReadingTrainer onComplete={handleSpeedReadingComplete} />;
-      case 'rhythm':
+      case "rhythm":
         return <RhythmTest onComplete={handleRhythmComplete} />;
-      case 'results':
+      case "results":
         return renderResults();
       default:
         return null;
@@ -277,4 +288,3 @@ const TestIQ = () => {
 };
 
 export default TestIQ;
-

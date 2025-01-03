@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { RefreshCw, Clock, CheckCircle, Settings } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { RefreshCw, Clock, CheckCircle, Settings } from "lucide-react";
 
 const INITIAL_GRID = [
   [5, 3, 0, 0, 7, 0, 0, 0, 0],
@@ -38,7 +38,7 @@ const Sudoku = () => {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleCellClick = (row, col) => {
@@ -97,7 +97,7 @@ const Sudoku = () => {
   const checkSudoku = () => {
     const isGridComplete = grid.every((row) => row.every((cell) => cell !== 0));
     if (!isGridComplete) {
-      alert('Completa tutte le celle prima di verificare!');
+      alert("Completa tutte le celle prima di verificare!");
       return;
     }
 
@@ -120,7 +120,7 @@ const Sudoku = () => {
         penaltyTime: timeWithPenalties,
       });
     } else {
-      alert('Ci sono degli errori nella griglia. Controlla e riprova!');
+      alert("Ci sono degli errori nella griglia. Controlla e riprova!");
     }
   };
 
@@ -188,7 +188,9 @@ const Sudoku = () => {
               )}
             </div>
             {mistakes > 0 && (
-              <span className="text-red-600 font-medium">Errori: {mistakes}</span>
+              <span className="text-red-600 font-medium">
+                Errori: {mistakes}
+              </span>
             )}
           </div>
         </div>
@@ -202,8 +204,8 @@ const Sudoku = () => {
                 className={`
                   w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14
                   relative
-                  ${rowIndex % 3 === 2 && rowIndex < 8 ? 'border-b-4 border-b-gray-800' : 'border-b border-gray-300'}
-                  ${colIndex % 3 === 2 && colIndex < 8 ? 'border-r-4 border-r-gray-800' : 'border-r border-gray-300'}
+                  ${rowIndex % 3 === 2 && rowIndex < 8 ? "border-b-4 border-b-gray-800" : "border-b border-gray-300"}
+                  ${colIndex % 3 === 2 && colIndex < 8 ? "border-r-4 border-r-gray-800" : "border-r border-gray-300"}
                 `}
               >
                 <button
@@ -220,25 +222,36 @@ const Sudoku = () => {
                     h-full
                     transition-all 
                     duration-200
-                    ${INITIAL_GRID[rowIndex][colIndex] !== 0
-                      ? 'bg-gray-100 text-gray-700 cursor-not-allowed'
-                      : 'hover:bg-blue-50 cursor-pointer'}
-                    ${selectedCell?.row === rowIndex && selectedCell?.col === colIndex
-                      ? 'bg-blue-100'
-                      : ''}
-                    ${cellErrors.has(`${rowIndex}-${colIndex}`)
-                      ? 'bg-red-100 text-red-600'
-                      : ''}
-                    ${cell !== 0 && INITIAL_GRID[rowIndex][colIndex] === 0
-                      ? 'text-blue-600'
-                      : ''}
+                    ${
+                      INITIAL_GRID[rowIndex][colIndex] !== 0
+                        ? "bg-gray-100 text-gray-700 cursor-not-allowed"
+                        : "hover:bg-blue-50 cursor-pointer"
+                    }
+                    ${
+                      selectedCell?.row === rowIndex &&
+                      selectedCell?.col === colIndex
+                        ? "bg-blue-100"
+                        : ""
+                    }
+                    ${
+                      cellErrors.has(`${rowIndex}-${colIndex}`)
+                        ? "bg-red-100 text-red-600"
+                        : ""
+                    }
+                    ${
+                      cell !== 0 && INITIAL_GRID[rowIndex][colIndex] === 0
+                        ? "text-blue-600"
+                        : ""
+                    }
                   `}
-                  disabled={INITIAL_GRID[rowIndex][colIndex] !== 0 || isComplete}
+                  disabled={
+                    INITIAL_GRID[rowIndex][colIndex] !== 0 || isComplete
+                  }
                 >
-                  {cell !== 0 ? cell : ''}
+                  {cell !== 0 ? cell : ""}
                 </button>
               </div>
-            ))
+            )),
           )}
         </div>
 
@@ -265,13 +278,15 @@ const Sudoku = () => {
                     rounded-lg 
                     transition-colors 
                     duration-200
-                    ${number === 0
-                      ? 'bg-red-50 hover:bg-red-100 text-red-600'
-                      : 'bg-white hover:bg-gray-50 border'}
+                    ${
+                      number === 0
+                        ? "bg-red-50 hover:bg-red-100 text-red-600"
+                        : "bg-white hover:bg-gray-50 border"
+                    }
                   `}
                   disabled={!selectedCell || isComplete}
                 >
-                  {number === 0 ? 'X' : number}
+                  {number === 0 ? "X" : number}
                 </button>
               ))}
             </div>

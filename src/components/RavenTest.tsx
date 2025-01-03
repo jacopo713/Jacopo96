@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Brain, Scale } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Brain, Scale } from "lucide-react";
 
 interface ShapeProps {
-  type: string;      // 'circle' | 'square' | 'triangle' | 'diamond'
+  type: string; // 'circle' | 'square' | 'triangle' | 'diamond'
   rotation?: number;
   size?: number;
   color?: string;
@@ -18,13 +18,13 @@ interface RavenTestProps {
   onComplete: (results: { score: number; accuracy: number }) => void;
 }
 
-const Shape: React.FC<ShapeProps> = ({ 
-  type, 
-  rotation = 0, 
-  size = 20, 
-  color = 'currentColor', 
-  opacity = 1, 
-  scale = 1 
+const Shape: React.FC<ShapeProps> = ({
+  type,
+  rotation = 0,
+  size = 20,
+  color = "currentColor",
+  opacity = 1,
+  scale = 1,
 }) => {
   const center = size / 2;
   const adjustedSize = size * scale;
@@ -32,20 +32,15 @@ const Shape: React.FC<ShapeProps> = ({
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      <g 
+      <g
         transform={`rotate(${rotation}, ${center}, ${center})`}
         opacity={opacity}
       >
-        {type === 'circle' && (
-          <circle 
-            cx={center}
-            cy={center}
-            r={baseSize}
-            fill={color}
-          />
+        {type === "circle" && (
+          <circle cx={center} cy={center} r={baseSize} fill={color} />
         )}
-        {type === 'square' && (
-          <rect 
+        {type === "square" && (
+          <rect
             x={center - baseSize}
             y={center - baseSize}
             width={baseSize * 2}
@@ -53,8 +48,8 @@ const Shape: React.FC<ShapeProps> = ({
             fill={color}
           />
         )}
-        {type === 'triangle' && (
-          <polygon 
+        {type === "triangle" && (
+          <polygon
             points={`
               ${center},${center - baseSize}
               ${center + baseSize},${center + baseSize}
@@ -63,8 +58,8 @@ const Shape: React.FC<ShapeProps> = ({
             fill={color}
           />
         )}
-        {type === 'diamond' && (
-          <polygon 
+        {type === "diamond" && (
+          <polygon
             points={`
               ${center},${center - baseSize}
               ${center + baseSize},${center}
@@ -88,13 +83,13 @@ const Shape: React.FC<ShapeProps> = ({
  */
 function normalizeVisualRotation(shape: string, rotation: number): number {
   switch (shape) {
-    case 'circle':
+    case "circle":
       return 0;
-    case 'square':
-    case 'diamond':
+    case "square":
+    case "diamond":
       // riduciamo la rotazione a un numero 0..89
       return rotation % 90;
-    case 'triangle':
+    case "triangle":
       // riduciamo la rotazione a un numero 0..119
       return rotation % 120;
     default:
@@ -103,7 +98,7 @@ function normalizeVisualRotation(shape: string, rotation: number): number {
 }
 
 /**
- * Confronta se due risposte sono "visivamente" identiche, 
+ * Confronta se due risposte sono "visivamente" identiche,
  * normalizzando la rotazione in base alla forma.
  */
 function areVisuallyIdentical(a: ShapeProps, b: ShapeProps): boolean {
@@ -114,7 +109,7 @@ function areVisuallyIdentical(a: ShapeProps, b: ShapeProps): boolean {
 
   const normA = normalizeVisualRotation(a.type, a.rotation ?? 0);
   const normB = normalizeVisualRotation(b.type, b.rotation ?? 0);
-  
+
   return normA === normB;
 }
 
@@ -127,7 +122,7 @@ function createRandomAnswer(
   colors: string[],
   opacities: number[],
   scales: number[],
-  isCorrect: boolean
+  isCorrect: boolean,
 ): Answer {
   return {
     type: shapes[Math.floor(Math.random() * shapes.length)],
@@ -135,7 +130,7 @@ function createRandomAnswer(
     color: colors[Math.floor(Math.random() * colors.length)],
     opacity: opacities[Math.floor(Math.random() * opacities.length)],
     scale: scales[Math.floor(Math.random() * scales.length)],
-    isCorrect
+    isCorrect,
   };
 }
 
@@ -148,11 +143,11 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
 
   // Config di base
   const systemConfig = {
-    shapes: ['circle', 'square', 'triangle', 'diamond'],
+    shapes: ["circle", "square", "triangle", "diamond"],
     rotations: [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 240, 270, 300, 330],
-    colors: ['#2563eb', '#dc2626', '#059669', '#7c2d12', '#6b21a8', '#0f766e'],
+    colors: ["#2563eb", "#dc2626", "#059669", "#7c2d12", "#6b21a8", "#0f766e"],
     opacities: [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3],
-    scales: [0.6, 0.8, 1, 1.2, 1.4, 1.6]
+    scales: [0.6, 0.8, 1, 1.2, 1.4, 1.6],
   };
 
   const complexityMatrix = {
@@ -168,40 +163,60 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
     10: { shapes: 4, rotations: 10, colors: 4, opacities: 4, scales: 3 },
     11: { shapes: 4, rotations: 12, colors: 5, opacities: 6, scales: 4 },
     12: { shapes: 4, rotations: 13, colors: 6, opacities: 7, scales: 5 },
-    13: { shapes: 4, rotations: 14, colors: 6, opacities: 8, scales: 6 }
+    13: { shapes: 4, rotations: 14, colors: 6, opacities: 8, scales: 6 },
   };
 
   /**
    * Genera pattern "avanzato" per i livelli 11–13 (con sin, cos, tan).
    */
-  function generateAdvancedPattern(i: number, j: number, level: number): ShapeProps {
+  function generateAdvancedPattern(
+    i: number,
+    j: number,
+    level: number,
+  ): ShapeProps {
     const basePattern: ShapeProps = {
       type: systemConfig.shapes[(i * 3 + j * 2) % systemConfig.shapes.length],
       rotation: ((i * 90 + j * 45) * level) % 360,
       color: systemConfig.colors[(i * 2 + j * 3) % systemConfig.colors.length],
       opacity: systemConfig.opacities[(i + j) % systemConfig.opacities.length],
-      scale: systemConfig.scales[(i * j) % systemConfig.scales.length]
+      scale: systemConfig.scales[(i * j) % systemConfig.scales.length],
     };
 
     if (level === 11) {
       return {
         ...basePattern,
         rotation: (basePattern.rotation + Math.sin(i * j) * 30) % 360,
-        scale: systemConfig.scales[Math.floor(Math.abs(Math.sin(i + j) * 4)) % systemConfig.scales.length]
+        scale:
+          systemConfig.scales[
+            Math.floor(Math.abs(Math.sin(i + j) * 4)) %
+              systemConfig.scales.length
+          ],
       };
     } else if (level === 12) {
       return {
         ...basePattern,
         rotation: (basePattern.rotation + Math.cos(i * j * Math.PI) * 45) % 360,
-        opacity: systemConfig.opacities[Math.floor(Math.abs(Math.cos(i + j) * 6)) % systemConfig.opacities.length]
+        opacity:
+          systemConfig.opacities[
+            Math.floor(Math.abs(Math.cos(i + j) * 6)) %
+              systemConfig.opacities.length
+          ],
       };
     } else {
       // Livello 13
       return {
         ...basePattern,
         rotation: (basePattern.rotation + Math.tan(i * j) * 60) % 360,
-        scale: systemConfig.scales[Math.floor(Math.abs(Math.tan(i + j) * 5)) % systemConfig.scales.length],
-        opacity: systemConfig.opacities[Math.floor(Math.abs(Math.sin(i * j * Math.PI) * 7)) % systemConfig.opacities.length]
+        scale:
+          systemConfig.scales[
+            Math.floor(Math.abs(Math.tan(i + j) * 5)) %
+              systemConfig.scales.length
+          ],
+        opacity:
+          systemConfig.opacities[
+            Math.floor(Math.abs(Math.sin(i * j * Math.PI) * 7)) %
+              systemConfig.opacities.length
+          ],
       };
     }
   }
@@ -213,9 +228,7 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
     const c = complexityMatrix[level];
 
     // 1) Inseriamo la corretta
-    const allAnswers: Answer[] = [
-      { ...correctAnswer, isCorrect: true }
-    ];
+    const allAnswers: Answer[] = [{ ...correctAnswer, isCorrect: true }];
 
     // 2) Creiamo 5 risposte sbagliate
     for (let i = 0; i < 5; i++) {
@@ -226,7 +239,7 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
         // Copiamo la base
         newAnswer = {
           ...correctAnswer,
-          isCorrect: false
+          isCorrect: false,
         };
 
         // Applichiamo qualche modifica (come facevi prima)
@@ -235,14 +248,16 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
             newAnswer.rotation = ((newAnswer.rotation ?? 0) + 45) % 360;
             break;
           case 1:
-            newAnswer.type = systemConfig.shapes[
-              (systemConfig.shapes.indexOf(newAnswer.type!) + 1) % c.shapes
-            ];
+            newAnswer.type =
+              systemConfig.shapes[
+                (systemConfig.shapes.indexOf(newAnswer.type!) + 1) % c.shapes
+              ];
             break;
           case 2:
-            newAnswer.type = systemConfig.shapes[
-              (systemConfig.shapes.indexOf(newAnswer.type!) + 2) % c.shapes
-            ];
+            newAnswer.type =
+              systemConfig.shapes[
+                (systemConfig.shapes.indexOf(newAnswer.type!) + 2) % c.shapes
+              ];
             newAnswer.rotation = ((newAnswer.rotation ?? 0) + 90) % 360;
             break;
           case 3:
@@ -266,19 +281,19 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
           systemConfig.colors,
           systemConfig.opacities,
           systemConfig.scales,
-          false
+          false,
         );
       }
 
       // 3) Finché collide VISIVAMENTE con una già presente, rigenera
-      while (allAnswers.some(ans => areVisuallyIdentical(ans, newAnswer))) {
+      while (allAnswers.some((ans) => areVisuallyIdentical(ans, newAnswer))) {
         newAnswer = createRandomAnswer(
           systemConfig.shapes,
           systemConfig.rotations,
           systemConfig.colors,
           systemConfig.opacities,
           systemConfig.scales,
-          false
+          false,
         );
       }
 
@@ -293,7 +308,9 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
    */
   function generatePattern(level: number) {
     const c = complexityMatrix[level];
-    const newMatrix = Array(3).fill(null).map(() => Array(3).fill(null));
+    const newMatrix = Array(3)
+      .fill(null)
+      .map(() => Array(3).fill(null));
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -301,12 +318,14 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
         if (level <= 10) {
           newMatrix[i][j] = {
             type: systemConfig.shapes[(i * 2 + j) % c.shapes],
-            rotation: systemConfig.rotations[
-              ((i + j) * (level >= 5 ? 2 : 1)) % c.rotations
-            ],
-            color: systemConfig.colors[
-              Math.min((i * 2 + j) % c.colors, c.colors - 1)
-            ],
+            rotation:
+              systemConfig.rotations[
+                ((i + j) * (level >= 5 ? 2 : 1)) % c.rotations
+              ],
+            color:
+              systemConfig.colors[
+                Math.min((i * 2 + j) % c.colors, c.colors - 1)
+              ],
             opacity:
               level >= 6
                 ? systemConfig.opacities[
@@ -318,7 +337,7 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
                 ? systemConfig.scales[
                     Math.min((i * j) % c.scales, c.scales - 1)
                   ]
-                : 1
+                : 1,
           };
         } else {
           // Avanzato
@@ -331,24 +350,20 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
     if (level <= 10) {
       correctAnswer = {
         type: systemConfig.shapes[(2 * 2 + 2) % c.shapes],
-        rotation: systemConfig.rotations[
-          ((2 + 2) * (level >= 5 ? 2 : 1)) % c.rotations
-        ],
-        color: systemConfig.colors[
-          Math.min((2 * 2 + 2) % c.colors, c.colors - 1)
-        ],
+        rotation:
+          systemConfig.rotations[
+            ((2 + 2) * (level >= 5 ? 2 : 1)) % c.rotations
+          ],
+        color:
+          systemConfig.colors[Math.min((2 * 2 + 2) % c.colors, c.colors - 1)],
         opacity:
           level >= 6
-            ? systemConfig.opacities[
-                Math.min(4 % c.opacities, c.opacities - 1)
-              ]
+            ? systemConfig.opacities[Math.min(4 % c.opacities, c.opacities - 1)]
             : 1,
         scale:
           level >= 7
-            ? systemConfig.scales[
-                Math.min(4 % c.scales, c.scales - 1)
-              ]
-            : 1
+            ? systemConfig.scales[Math.min(4 % c.scales, c.scales - 1)]
+            : 1,
       };
     } else {
       correctAnswer = generateAdvancedPattern(2, 2, level);
@@ -367,16 +382,16 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
     setSelectedAnswer(index);
     const isCorrect = answers[index].isCorrect;
     if (isCorrect) {
-      setScore(prev => prev + 1);
+      setScore((prev) => prev + 1);
     }
     setTimeout(() => {
       if (level < 13) {
-        setLevel(prev => prev + 1);
+        setLevel((prev) => prev + 1);
       } else {
         const finalScore = score + (isCorrect ? 1 : 0);
         onComplete({
           score: finalScore,
-          accuracy: finalScore / 13
+          accuracy: finalScore / 13,
         });
       }
     }, 800);
@@ -412,7 +427,7 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
                 <span className="text-2xl text-gray-400">?</span>
               )}
             </div>
-          ))
+          )),
         )}
       </div>
 
@@ -427,9 +442,9 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
                 ${
                   selectedAnswer === idx
                     ? answer.isCorrect
-                      ? 'bg-green-50 border-green-500'
-                      : 'bg-red-50 border-red-500'
-                    : 'hover:bg-gray-50'
+                      ? "bg-green-50 border-green-500"
+                      : "bg-red-50 border-red-500"
+                    : "hover:bg-gray-50"
                 }
               `}
             >
@@ -444,10 +459,10 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
       {level >= 11 && (
         <div className="mt-4 p-3 bg-purple-50 rounded-lg">
           <p className="text-sm text-purple-800 font-medium">
-            Livello Avanzato {level - 10}/3:{' '}
-            {level === 11 && 'Pattern Trigonometrici Base'}
-            {level === 12 && 'Pattern Trigonometrici Composti'}
-            {level === 13 && 'Pattern Trigonometrici Integrati'}
+            Livello Avanzato {level - 10}/3:{" "}
+            {level === 11 && "Pattern Trigonometrici Base"}
+            {level === 12 && "Pattern Trigonometrici Composti"}
+            {level === 13 && "Pattern Trigonometrici Integrati"}
           </p>
         </div>
       )}
@@ -456,4 +471,3 @@ const RavenTest: React.FC<RavenTestProps> = ({ onComplete }) => {
 };
 
 export default RavenTest;
-

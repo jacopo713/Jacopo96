@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Music } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { Music } from "lucide-react";
 
 type Note = {
-  note: number;     // Frequenza in Hz
+  note: number; // Frequenza in Hz
   duration: number; // Durata in millisecondi
 };
 
@@ -10,7 +10,7 @@ type Note = {
 const melodies: Note[][] = [
   // Livello 1: Melodia semplice, 4 note, durata regolare
   [
-    { note: 440, duration: 500 },    // A4
+    { note: 440, duration: 500 }, // A4
     { note: 523.25, duration: 500 }, // C5
     { note: 659.25, duration: 500 }, // E5
     { note: 783.99, duration: 500 }, // G5
@@ -18,7 +18,7 @@ const melodies: Note[][] = [
 
   // Livello 2: Melodia leggermente più lunga, 6 note
   [
-    { note: 440, duration: 400 },    // A4
+    { note: 440, duration: 400 }, // A4
     { note: 523.25, duration: 400 }, // C5
     { note: 659.25, duration: 400 }, // E5
     { note: 783.99, duration: 400 }, // G5
@@ -28,7 +28,7 @@ const melodies: Note[][] = [
 
   // Livello 3: Introduzione di note più corte
   [
-    { note: 440, duration: 300 },    // A4
+    { note: 440, duration: 300 }, // A4
     { note: 523.25, duration: 150 }, // C5
     { note: 659.25, duration: 300 }, // E5
     { note: 783.99, duration: 150 }, // G5
@@ -38,49 +38,49 @@ const melodies: Note[][] = [
 
   // Livello 4: Aggiunta di pause (note di durata 0)
   [
-    { note: 440, duration: 300 },    // A4
-    { note: 0, duration: 150 },      // Pausa
+    { note: 440, duration: 300 }, // A4
+    { note: 0, duration: 150 }, // Pausa
     { note: 523.25, duration: 300 }, // C5
-    { note: 0, duration: 150 },      // Pausa
+    { note: 0, duration: 150 }, // Pausa
     { note: 659.25, duration: 300 }, // E5
-    { note: 0, duration: 150 },      // Pausa
+    { note: 0, duration: 150 }, // Pausa
     { note: 783.99, duration: 300 }, // G5
   ],
 
   // Livello 5: Ritmo più complesso con sincopi
   [
-    { note: 440, duration: 200 },    // A4
+    { note: 440, duration: 200 }, // A4
     { note: 523.25, duration: 400 }, // C5
-    { note: 440, duration: 200 },    // A4
+    { note: 440, duration: 200 }, // A4
     { note: 659.25, duration: 400 }, // E5
-    { note: 440, duration: 200 },    // A4
+    { note: 440, duration: 200 }, // A4
     { note: 783.99, duration: 400 }, // G5
   ],
 
   // Livello 6: Melodia più lunga con variazioni di durata
   [
-    { note: 440, duration: 250 },    // A4
+    { note: 440, duration: 250 }, // A4
     { note: 523.25, duration: 500 }, // C5
     { note: 659.25, duration: 250 }, // E5
     { note: 783.99, duration: 500 }, // G5
     { note: 659.25, duration: 250 }, // E5
     { note: 523.25, duration: 500 }, // C5
-    { note: 440, duration: 250 },    // A4
+    { note: 440, duration: 250 }, // A4
   ],
 
   // Livello 7: Introduzione di intervalli più ampi
   [
-    { note: 440, duration: 300 },    // A4
+    { note: 440, duration: 300 }, // A4
     { note: 659.25, duration: 300 }, // E5
     { note: 523.25, duration: 300 }, // C5
     { note: 783.99, duration: 300 }, // G5
     { note: 659.25, duration: 300 }, // E5
-    { note: 880, duration: 300 },    // A5
+    { note: 880, duration: 300 }, // A5
   ],
 
   // Livello 8: Ritmo irregolare con note molto corte e lunghe
   [
-    { note: 440, duration: 100 },    // A4
+    { note: 440, duration: 100 }, // A4
     { note: 523.25, duration: 600 }, // C5
     { note: 659.25, duration: 100 }, // E5
     { note: 783.99, duration: 600 }, // G5
@@ -90,13 +90,13 @@ const melodies: Note[][] = [
 
   // Livello 9: Melodia molto lunga con variazioni complesse
   [
-    { note: 440, duration: 200 },    // A4
+    { note: 440, duration: 200 }, // A4
     { note: 523.25, duration: 300 }, // C5
     { note: 659.25, duration: 200 }, // E5
     { note: 783.99, duration: 300 }, // G5
     { note: 659.25, duration: 200 }, // E5
     { note: 523.25, duration: 300 }, // C5
-    { note: 440, duration: 200 },    // A4
+    { note: 440, duration: 200 }, // A4
     { note: 523.25, duration: 300 }, // C5
     { note: 659.25, duration: 200 }, // E5
     { note: 783.99, duration: 300 }, // G5
@@ -104,16 +104,16 @@ const melodies: Note[][] = [
 
   // Livello 10: Melodia complessa con ritmi irregolari e pause
   [
-    { note: 440, duration: 150 },    // A4
-    { note: 0, duration: 150 },      // Pausa
+    { note: 440, duration: 150 }, // A4
+    { note: 0, duration: 150 }, // Pausa
     { note: 523.25, duration: 300 }, // C5
     { note: 659.25, duration: 150 }, // E5
-    { note: 0, duration: 150 },      // Pausa
+    { note: 0, duration: 150 }, // Pausa
     { note: 783.99, duration: 300 }, // G5
     { note: 659.25, duration: 150 }, // E5
-    { note: 0, duration: 150 },      // Pausa
+    { note: 0, duration: 150 }, // Pausa
     { note: 523.25, duration: 300 }, // C5
-    { note: 440, duration: 150 },    // A4
+    { note: 440, duration: 150 }, // A4
   ],
 ];
 
@@ -124,7 +124,9 @@ interface RhythmTestProps {
 const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [phase, setPhase] = useState<'start' | 'listen' | 'replay' | 'results'>('start');
+  const [phase, setPhase] = useState<"start" | "listen" | "replay" | "results">(
+    "start",
+  );
   const [precision, setPrecision] = useState(100);
   const [pulseScale, setPulseScale] = useState(1);
   const [currentLevel, setCurrentLevel] = useState(0);
@@ -133,10 +135,14 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
   const startTimeRef = useRef<number | null>(null);
 
   const currentMelody = melodies[currentLevel] || melodies[0];
-  const totalDuration = currentMelody.reduce((acc, { duration }) => acc + duration, 0);
+  const totalDuration = currentMelody.reduce(
+    (acc, { duration }) => acc + duration,
+    0,
+  );
 
   const playMelody = async (isDemo = false) => {
-    const ctx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const ctx =
+      audioCtx || new (window.AudioContext || window.webkitAudioContext)();
     if (!audioCtx) setAudioCtx(ctx);
     await ctx.resume();
 
@@ -151,7 +157,7 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 
-      osc.type = 'sine';
+      osc.type = "sine";
       osc.frequency.setValueAtTime(note, startTime);
 
       gain.gain.setValueAtTime(0, startTime);
@@ -178,16 +184,19 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
     if (isDemo) {
       setTimeout(() => {
         if (masterGainRef.current) {
-          masterGainRef.current.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.1);
+          masterGainRef.current.gain.linearRampToValueAtTime(
+            0,
+            ctx.currentTime + 0.1,
+          );
         }
         setIsPlaying(false);
-        setPhase('replay');
+        setPhase("replay");
       }, totalDuration);
     }
   };
 
   const startDemo = () => {
-    setPhase('listen');
+    setPhase("listen");
     playMelody(true);
   };
 
@@ -198,25 +207,32 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
     const deviation = Math.abs(duration - totalDuration);
     const maxDeviation = totalDuration;
 
-    let calculatedPrecision = 100 - (deviation / maxDeviation) * 100;
+    const calculatedPrecision = 100 - (deviation / maxDeviation) * 100;
     const roundedPrecision = Math.round(Math.max(calculatedPrecision, 0));
     const finalPrecision = Math.min(roundedPrecision, 100);
 
     // Aggiungi la precisione corrente all'array PRIMA di calcolare la media
-    setPrecisions(prev => [...prev, finalPrecision]);
+    setPrecisions((prev) => [...prev, finalPrecision]);
 
     // Calcola la precisione da visualizzare
     let precisionToDisplay = finalPrecision; // Usa la precisione corrente come default
-    if (precisions.length >= 0) { // Ora l'array include la precisione corrente
-      const sum = [...precisions, finalPrecision].reduce((acc, curr) => acc + curr, 0);
+    if (precisions.length >= 0) {
+      // Ora l'array include la precisione corrente
+      const sum = [...precisions, finalPrecision].reduce(
+        (acc, curr) => acc + curr,
+        0,
+      );
       precisionToDisplay = sum / (precisions.length + 1); // Calcola la media corretta
     }
 
     setPrecision(precisionToDisplay); // Imposta la precisione da visualizzare
 
-    masterGainRef.current.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+    masterGainRef.current.gain.linearRampToValueAtTime(
+      0,
+      audioCtx.currentTime + 0.1,
+    );
     setIsPlaying(false);
-    setPhase('results');
+    setPhase("results");
 
     if (onComplete) {
       onComplete({ precision: finalPrecision, level: currentLevel });
@@ -226,7 +242,7 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
   const nextLevel = () => {
     if (currentLevel < melodies.length - 1) {
       setCurrentLevel(currentLevel + 1);
-      setPhase('start');
+      setPhase("start");
       // Non resettare precision a 100, mantieni il valore della media
     } else {
       console.log("Hai completato tutti i livelli!");
@@ -235,7 +251,7 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
 
   const resetTest = () => {
     setCurrentLevel(0);
-    setPhase('start');
+    setPhase("start");
     setPrecision(100);
     setPrecisions([]); // Resetta l'array delle precisioni
   };
@@ -253,7 +269,9 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
           <Music className="w-8 h-8 text-indigo-600" />
-          <h2 className="text-xl font-bold">Test del Ritmo - Livello {currentLevel + 1}</h2>
+          <h2 className="text-xl font-bold">
+            Test del Ritmo - Livello {currentLevel + 1}
+          </h2>
         </div>
         <div className="text-lg font-semibold">
           Precisione: {precision.toFixed(2)}% {/* Mostra la precisione media */}
@@ -262,7 +280,7 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
 
       <div className="mb-6">
         <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 transition-all duration-200"
             style={{ width: `${precision}%` }}
           />
@@ -270,11 +288,11 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
       </div>
 
       <div className="relative mb-6 w-64 h-64 mx-auto">
-        <div 
+        <div
           className={`
             absolute inset-0 border-4 rounded-full 
             transition-all duration-100 ease-out
-            ${isPlaying ? 'border-yellow-500 bg-yellow-50' : 'border-gray-200'}
+            ${isPlaying ? "border-yellow-500 bg-yellow-50" : "border-gray-200"}
           `}
           style={{
             transform: `scale(${pulseScale})`,
@@ -283,31 +301,31 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
       </div>
 
       <div className="flex justify-center gap-4">
-        {phase === 'start' && (
-          <button 
-            onClick={startDemo} 
+        {phase === "start" && (
+          <button
+            onClick={startDemo}
             className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium"
           >
             Inizia Test
           </button>
         )}
-        {phase === 'replay' && !isPlaying && (
-          <button 
-            onClick={() => playMelody(false)} 
+        {phase === "replay" && !isPlaying && (
+          <button
+            onClick={() => playMelody(false)}
             className="px-6 py-3 bg-green-600 text-white rounded-lg font-medium"
           >
             Riproduci
           </button>
         )}
-        {phase === 'replay' && isPlaying && (
-          <button 
-            onClick={stopReplay} 
+        {phase === "replay" && isPlaying && (
+          <button
+            onClick={stopReplay}
             className="px-6 py-3 bg-red-600 text-white rounded-lg font-medium"
           >
             Stop
           </button>
         )}
-        {phase === 'results' && (
+        {phase === "results" && (
           <>
             <button
               onClick={resetTest}
@@ -328,10 +346,12 @@ const RhythmTest: React.FC<RhythmTestProps> = ({ onComplete }) => {
       </div>
 
       <div className="mt-4 text-center text-sm text-gray-600">
-        {phase === 'listen' && 'Ascolta la melodia'}
-        {phase === 'replay' && !isPlaying && 'Riproduci la melodia'}
-        {phase === 'replay' && isPlaying && 'Ferma quando la melodia dovrebbe finire'}
-        {phase === 'results' && 'Test completato!'}
+        {phase === "listen" && "Ascolta la melodia"}
+        {phase === "replay" && !isPlaying && "Riproduci la melodia"}
+        {phase === "replay" &&
+          isPlaying &&
+          "Ferma quando la melodia dovrebbe finire"}
+        {phase === "results" && "Test completato!"}
       </div>
     </div>
   );

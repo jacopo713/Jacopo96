@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { RefreshCw, Clock, Trophy } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { RefreshCw, Clock, Trophy } from "lucide-react";
 
 function SchulteTable() {
-  const [numbers, setNumbers] = useState([]);
+  const [numbers, setNumbers] = useState<number[]>([]);
   const [currentNumber, setCurrentNumber] = useState(1);
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(0);
-  const [bestTime, setBestTime] = useState(null);
-  const [size, setSize] = useState(5); // 5x5 default
+  const [bestTime, setBestTime] = useState<number | null>(null);
+  const [size, setSize] = useState(5);
   const [showInstructions, setShowInstructions] = useState(true);
 
-  const generateNumbers = () => {
+  const generateNumbers = (): number[] => {
     const nums = Array.from({ length: size * size }, (_, i) => i + 1);
     for (let i = nums.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -27,7 +27,7 @@ function SchulteTable() {
     setShowInstructions(false);
   };
 
-  const handleNumberClick = (number) => {
+  const handleNumberClick = (number: number) => {
     if (number === currentNumber) {
       if (number === size * size) {
         setGameStarted(false);
@@ -41,7 +41,7 @@ function SchulteTable() {
   };
 
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
     if (gameStarted) {
       interval = setInterval(() => {
         setTimer((prev) => prev + 1);
@@ -50,10 +50,10 @@ function SchulteTable() {
     return () => clearInterval(interval);
   }, [gameStarted]);
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -65,10 +65,15 @@ function SchulteTable() {
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold mb-2">Come si gioca:</h3>
               <ul className="list-disc list-inside space-y-2">
-                <li>Trova e clicca i numeri in ordine crescente (da 1 a {size * size})</li>
+                <li>
+                  Trova e clicca i numeri in ordine crescente (da 1 a{" "}
+                  {size * size})
+                </li>
                 <li>Cerca di mantenere lo sguardo al centro della griglia</li>
                 <li>Usa la visione periferica per trovare i numeri</li>
-                <li>Cerca di completare l'esercizio il più velocemente possibile</li>
+                <li>
+                  Cerca di completare l'esercizio il più velocemente possibile
+                </li>
               </ul>
             </div>
             <div>
@@ -105,7 +110,7 @@ function SchulteTable() {
                   <span className="font-mono text-lg">{formatTime(timer)}</span>
                 </div>
               </div>
-              {bestTime && (
+              {bestTime !== null && (
                 <div className="flex items-center text-yellow-600">
                   <Trophy className="w-5 h-5 mr-2" />
                   <span className="font-mono">{formatTime(bestTime)}</span>
@@ -114,7 +119,7 @@ function SchulteTable() {
             </div>
 
             <div
-              className="grid gap-3 mx-auto" // Aumentato il gap per più spazio
+              className="grid gap-3 mx-auto"
               style={{
                 gridTemplateColumns: `repeat(${size}, 1fr)`,
               }}
@@ -124,15 +129,17 @@ function SchulteTable() {
                   key={index}
                   onClick={() => handleNumberClick(number)}
                   className={`
-                    w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 // Dimensioni aumentate
+                    w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28
                     flex items-center justify-center
-                    text-xl font-bold rounded-lg // Testo più grande
+                    text-xl font-bold rounded-lg
                     transition-colors duration-200
                     bg-white hover:bg-gray-100
                     border-2
-                    ${number < currentNumber
-                      ? 'border-green-500 text-green-500'
-                      : 'border-gray-200'}
+                    ${
+                      number < currentNumber
+                        ? "border-green-500 text-green-500"
+                        : "border-gray-200"
+                    }
                   `}
                 >
                   {number}

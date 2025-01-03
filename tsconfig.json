@@ -1,7 +1,45 @@
 {
-  "files": [],
-  "references": [
+  "compilerOptions": {
+    // Opzioni di base
+    "target": "es5",                // Specifica la versione di ECMAScript di output
+    "module": "esnext",             // Usa il sistema di moduli ES6+
+    "lib": ["dom", "esnext"],       // Include le librerie per il browser e le funzionalità ES6+
+    "allowJs": true,                // Permette di importare file JavaScript
+    "skipLibCheck": true,           // Salta la verifica delle dichiarazioni di tipo nelle librerie
+    "esModuleInterop": true,        // Migliora l'interoperabilità con i moduli CommonJS
+    "allowSyntheticDefaultImports": true, // Permette l'importazione predefinita per moduli senza default
+
+    // Opzioni di controllo rigoroso
+    "strict": true,                 // Abilita tutte le opzioni di controllo rigoroso
+    "noImplicitAny": true,          // Segnala errori per variabili con tipo implicito `any`
+    "strictNullChecks": true,       // Controlla i valori null/undefined in modo rigoroso
+    "strictFunctionTypes": true,    // Controlla i tipi delle funzioni in modo rigoroso
+    "strictBindCallApply": true,    // Controlla l'uso di `bind`, `call` e `apply`
+    "strictPropertyInitialization": true, // Richiede l'inizializzazione delle proprietà delle classi
+    "noImplicitThis": true,         // Segnala errori per `this` con tipo implicito
+    "alwaysStrict": true,           // Esegue il codice in modalità strict
+
+    // Opzioni di output
+    "outDir": "dist",               // Cartella di output per i file compilati
+    "rootDir": "src",               // Cartella di input per i file TypeScript
+    "removeComments": true,         // Rimuove i commenti nei file di output
+    "noEmitOnError": true,          // Non genera file di output se ci sono errori
+
+    // Opzioni di JSX (per React)
+    "jsx": "react-jsx",             // Trasforma JSX in chiamate a `React.createElement`
+    "jsxImportSource": "react",     // Specifica la libreria per JSX (React)
+
+    // Altre opzioni utili
+    "forceConsistentCasingInFileNames": true, // Forza la coerenza nei nomi dei file
+    "moduleResolution": "node",     // Usa la risoluzione dei moduli di Node.js
+    "resolveJsonModule": true,      // Permette di importare file JSON
+    "isolatedModules": true         // Garantisce che ogni file sia un modulo isolato
+  },
+  "files": [],                      // Mantieni questa opzione (utile per project references)
+  "references": [                   // Mantieni questa opzione (utile per project references)
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "include": ["src"],               // Include tutti i file nella cartella `src`
+  "exclude": ["node_modules", "dist"] // Esclude le cartelle `node_modules` e `dist`
 }

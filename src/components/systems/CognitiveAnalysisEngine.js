@@ -10,7 +10,7 @@ class CognitiveAnalysisEngine {
         astratto: 1.5,
         critico: 1.2,
         sistemico: 1.3,
-        raven: 1.6
+        raven: 1.6,
       },
       expectedResponseTimes: {
         deduttivo: 45000,
@@ -21,24 +21,27 @@ class CognitiveAnalysisEngine {
         astratto: 45000,
         critico: 60000,
         sistemico: 55000,
-        raven: 40000
+        raven: 40000,
       },
       evaluationWeights: {
         accuracy: 0.7,
-        speed: 0.3
-      }
+        speed: 0.3,
+      },
     };
 
     this.iqParams = {
       mean: 100,
       standardDeviation: 15,
       minScore: 40,
-      maxScore: 160
+      maxScore: 160,
     };
   }
 
   analyzePerformance(responses, category) {
-    const accuracy = this.calculateAccuracy(responses.answers, responses.correctAnswers);
+    const accuracy = this.calculateAccuracy(
+      responses.answers,
+      responses.correctAnswers,
+    );
     const speedScore = this.analyzeSpeed(responses.responseTimes, category);
     const rawScore = this.calculateRawScore(accuracy, speedScore, category);
     return this.normalizeToIQ(rawScore);
@@ -52,7 +55,8 @@ class CognitiveAnalysisEngine {
 
   analyzeSpeed(responseTimes, category) {
     const expectedTime = this.metrics.expectedResponseTimes[category];
-    const avgTime = responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+    const avgTime =
+      responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
     const speedRatio = avgTime / expectedTime;
     return 1 / (1 + Math.exp(-(1 - speedRatio)));
   }
@@ -60,11 +64,11 @@ class CognitiveAnalysisEngine {
   calculateRawScore(accuracy, speedScore, category) {
     const weights = this.metrics.evaluationWeights;
     const categoryWeight = this.metrics.responseTimeWeights[category];
-    
-    const weightedScore = (
-      Math.pow(accuracy, 1.2) * weights.accuracy +
-      speedScore * weights.speed
-    ) * Math.sqrt(categoryWeight);
+
+    const weightedScore =
+      (Math.pow(accuracy, 1.2) * weights.accuracy +
+        speedScore * weights.speed) *
+      Math.sqrt(categoryWeight);
 
     return Math.max(0, Math.min(1, weightedScore));
   }
@@ -73,7 +77,7 @@ class CognitiveAnalysisEngine {
     const { mean, standardDeviation, minScore, maxScore } = this.iqParams;
     const normalized = 1 / (1 + Math.exp(-6 * (rawScore - 0.5)));
     const zScore = (normalized - 0.5) * 2;
-    const iqScore = Math.round(mean + (zScore * standardDeviation));
+    const iqScore = Math.round(mean + zScore * standardDeviation);
     return Math.max(minScore, Math.min(maxScore, iqScore));
   }
 
@@ -86,14 +90,19 @@ class CognitiveAnalysisEngine {
         category,
         iqScore: performance,
         details: {
-          accuracy: this.calculateAccuracy(responses.answers, responses.correctAnswers),
-          averageResponseTime: responses.responseTimes.reduce((a, b) => a + b, 0) / responses.responseTimes.length,
-          speedScore: speedMetrics
+          accuracy: this.calculateAccuracy(
+            responses.answers,
+            responses.correctAnswers,
+          ),
+          averageResponseTime:
+            responses.responseTimes.reduce((a, b) => a + b, 0) /
+            responses.responseTimes.length,
+          speedScore: speedMetrics,
         },
-        interpretation: this.interpretResults(performance)
+        interpretation: this.interpretResults(performance),
       };
     } catch (error) {
-      console.error('Errore report:', error);
+      console.error("Errore report:", error);
       return this.generateFallbackReport(responses, category);
     }
   }
@@ -108,16 +117,21 @@ class CognitiveAnalysisEngine {
   }
 
   generateFallbackReport(responses, category) {
-    const accuracy = this.calculateAccuracy(responses.answers, responses.correctAnswers);
+    const accuracy = this.calculateAccuracy(
+      responses.answers,
+      responses.correctAnswers,
+    );
     return {
       category,
       iqScore: 100,
       details: {
         accuracy,
-        averageResponseTime: responses.responseTimes.reduce((a, b) => a + b, 0) / responses.responseTimes.length,
-        speedScore: 0.5
+        averageResponseTime:
+          responses.responseTimes.reduce((a, b) => a + b, 0) /
+          responses.responseTimes.length,
+        speedScore: 0.5,
       },
-      interpretation: 'Nella media'
+      interpretation: "Nella media",
     };
   }
 }

@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Brain, Home, Puzzle, Eye, Clock, Table, Music } from 'lucide-react'; // Importa Music
-import { Link } from 'react-router-dom';
+import React, { useState, useRef } from "react";
+import { Brain, Home, Puzzle, Eye, Clock, Table, Music } from "lucide-react"; // Importa Music
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isRompicapiOpen, setIsRompicapiOpen] = useState(false);
@@ -19,7 +19,9 @@ const Navbar = () => {
             {/* Logo */}
             <div className="flex items-center">
               <Brain className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-800">Turing</span>
+              <span className="ml-2 text-xl font-bold text-gray-800">
+                Turing
+              </span>
             </div>
 
             {/* Menu principale */}
@@ -46,11 +48,15 @@ const Navbar = () => {
               <div
                 className="relative inline-block"
                 onMouseEnter={() => {
-                  if (rompicapiTimeoutRef.current) clearTimeout(rompicapiTimeoutRef.current);
+                  if (rompicapiTimeoutRef.current)
+                    clearTimeout(rompicapiTimeoutRef.current);
                   setIsRompicapiOpen(true);
                 }}
                 onMouseLeave={() => {
-                  rompicapiTimeoutRef.current = setTimeout(() => setIsRompicapiOpen(false), 200);
+                  rompicapiTimeoutRef.current = setTimeout(
+                    () => setIsRompicapiOpen(false),
+                    200,
+                  );
                 }}
               >
                 <button className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center">
@@ -61,10 +67,14 @@ const Navbar = () => {
                   <div
                     className="absolute bg-white shadow-lg rounded-md mt-2 min-w-[160px] border border-gray-100"
                     onMouseEnter={() => {
-                      if (rompicapiTimeoutRef.current) clearTimeout(rompicapiTimeoutRef.current);
+                      if (rompicapiTimeoutRef.current)
+                        clearTimeout(rompicapiTimeoutRef.current);
                     }}
                     onMouseLeave={() => {
-                      rompicapiTimeoutRef.current = setTimeout(() => setIsRompicapiOpen(false), 200);
+                      rompicapiTimeoutRef.current = setTimeout(
+                        () => setIsRompicapiOpen(false),
+                        200,
+                      );
                     }}
                   >
                     <Link
@@ -82,11 +92,15 @@ const Navbar = () => {
               <div
                 className="relative inline-block"
                 onMouseEnter={() => {
-                  if (attenzioneTimeoutRef.current) clearTimeout(attenzioneTimeoutRef.current);
+                  if (attenzioneTimeoutRef.current)
+                    clearTimeout(attenzioneTimeoutRef.current);
                   setIsAttenzioneOpen(true);
                 }}
                 onMouseLeave={() => {
-                  attenzioneTimeoutRef.current = setTimeout(() => setIsAttenzioneOpen(false), 200);
+                  attenzioneTimeoutRef.current = setTimeout(
+                    () => setIsAttenzioneOpen(false),
+                    200,
+                  );
                 }}
               >
                 <button className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center">
@@ -97,10 +111,14 @@ const Navbar = () => {
                   <div
                     className="absolute bg-white shadow-lg rounded-md mt-2 min-w-[160px] border border-gray-100"
                     onMouseEnter={() => {
-                      if (attenzioneTimeoutRef.current) clearTimeout(attenzioneTimeoutRef.current);
+                      if (attenzioneTimeoutRef.current)
+                        clearTimeout(attenzioneTimeoutRef.current);
                     }}
                     onMouseLeave={() => {
-                      attenzioneTimeoutRef.current = setTimeout(() => setIsAttenzioneOpen(false), 200);
+                      attenzioneTimeoutRef.current = setTimeout(
+                        () => setIsAttenzioneOpen(false),
+                        200,
+                      );
                     }}
                   >
                     <Link
@@ -139,11 +157,15 @@ const Navbar = () => {
               <div
                 className="relative inline-block"
                 onMouseEnter={() => {
-                  if (memoriaTimeoutRef.current) clearTimeout(memoriaTimeoutRef.current);
+                  if (memoriaTimeoutRef.current)
+                    clearTimeout(memoriaTimeoutRef.current);
                   setIsMemoriaOpen(true);
                 }}
                 onMouseLeave={() => {
-                  memoriaTimeoutRef.current = setTimeout(() => setIsMemoriaOpen(false), 200);
+                  memoriaTimeoutRef.current = setTimeout(
+                    () => setIsMemoriaOpen(false),
+                    200,
+                  );
                 }}
               >
                 <button className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center">
@@ -154,10 +176,14 @@ const Navbar = () => {
                   <div
                     className="absolute bg-white shadow-lg rounded-md mt-2 min-w-[160px] border border-gray-100"
                     onMouseEnter={() => {
-                      if (memoriaTimeoutRef.current) clearTimeout(memoriaTimeoutRef.current);
+                      if (memoriaTimeoutRef.current)
+                        clearTimeout(memoriaTimeoutRef.current);
                     }}
                     onMouseLeave={() => {
-                      memoriaTimeoutRef.current = setTimeout(() => setIsMemoriaOpen(false), 200);
+                      memoriaTimeoutRef.current = setTimeout(
+                        () => setIsMemoriaOpen(false),
+                        200,
+                      );
                     }}
                   >
                     <Link

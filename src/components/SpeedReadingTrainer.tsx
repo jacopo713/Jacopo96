@@ -1,9 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const SpeedReadingTrainer = ({ onComplete }) => {
   const [words] = useState([
-    "casa", "libro", "sole", "mare", "albero", "gatto", "cane", "tavolo", "sedia", "finestra",
-    "porta", "cielo", "terra", "fiore", "montagna", "fiume", "lago", "stella", "luna", "vento"
+    "casa",
+    "libro",
+    "sole",
+    "mare",
+    "albero",
+    "gatto",
+    "cane",
+    "tavolo",
+    "sedia",
+    "finestra",
+    "porta",
+    "cielo",
+    "terra",
+    "fiore",
+    "montagna",
+    "fiume",
+    "lago",
+    "stella",
+    "luna",
+    "vento",
   ]);
   const [currentWord, setCurrentWord] = useState("");
   const [currentPosition, setCurrentPosition] = useState(-1);
@@ -18,7 +36,7 @@ const SpeedReadingTrainer = ({ onComplete }) => {
   const [totalAnswers, setTotalAnswers] = useState(0);
 
   const generateOptions = (correctWord) => {
-    let opts = [correctWord];
+    const opts = [correctWord];
     while (opts.length < 4) {
       const randomWord = words[Math.floor(Math.random() * words.length)];
       if (!opts.includes(randomWord)) {
@@ -53,7 +71,7 @@ const SpeedReadingTrainer = ({ onComplete }) => {
 
       timeout = setTimeout(() => {
         setCurrentPosition(-1);
-        
+
         timeout = setTimeout(() => {
           if (cycleCount < 20) {
             if (Math.random() > 0.3) {
@@ -80,8 +98,8 @@ const SpeedReadingTrainer = ({ onComplete }) => {
     if (cycleCount >= 20) {
       const finalResults = {
         wpm,
-        accuracy: (correctAnswers / totalAnswers) || 0,
-        score: Math.round((wpm * ((correctAnswers / totalAnswers) || 0)))
+        accuracy: correctAnswers / totalAnswers || 0,
+        score: Math.round(wpm * (correctAnswers / totalAnswers || 0)),
       };
       if (onComplete) {
         onComplete(finalResults);
@@ -90,17 +108,17 @@ const SpeedReadingTrainer = ({ onComplete }) => {
   }, [cycleCount, wpm, correctAnswers, totalAnswers, onComplete]);
 
   const handleOptionClick = (selectedWord) => {
-    setTotalAnswers(prev => prev + 1);
+    setTotalAnswers((prev) => prev + 1);
     if (selectedWord === lastWord) {
       setResult("Corretto! 🎉");
-      setWpm(prev => Math.min(1000, prev + 50));
-      setCorrectAnswers(prev => prev + 1);
+      setWpm((prev) => Math.min(1000, prev + 50));
+      setCorrectAnswers((prev) => prev + 1);
     } else {
       setResult(`Sbagliato. La parola era: ${lastWord}`);
-      setWpm(prev => Math.max(50, prev - 50));
+      setWpm((prev) => Math.max(50, prev - 50));
     }
     setIsAsking(false);
-    setCycleCount(prev => prev + 1);
+    setCycleCount((prev) => prev + 1);
   };
 
   const startTraining = () => {
@@ -117,10 +135,10 @@ const SpeedReadingTrainer = ({ onComplete }) => {
   };
 
   const getSpeedLevel = () => {
-    if (wpm < 250) return 'Velocità base';
-    if (wpm < 400) return 'Lettura veloce';
-    if (wpm < 700) return 'Lettura avanzata';
-    return 'Lettura esperta';
+    if (wpm < 250) return "Velocità base";
+    if (wpm < 400) return "Lettura veloce";
+    if (wpm < 700) return "Lettura avanzata";
+    return "Lettura esperta";
   };
 
   return (
@@ -137,19 +155,22 @@ const SpeedReadingTrainer = ({ onComplete }) => {
               aspect-square border text-center
               flex items-center justify-center
               transition-all duration-100 ease-in-out
-              ${currentPosition === index 
-                ? 'bg-blue-50 border-blue-400' 
-                : 'bg-gray-50 border-gray-200'
+              ${
+                currentPosition === index
+                  ? "bg-blue-50 border-blue-400"
+                  : "bg-gray-50 border-gray-200"
               }
-              ${index === currentPosition ? 'scale-105' : 'scale-100'}
+              ${index === currentPosition ? "scale-105" : "scale-100"}
             `}
           >
-            <span className={`
+            <span
+              className={`
               text-xl font-medium
               transition-opacity duration-100
-              ${currentPosition === index ? 'opacity-100' : 'opacity-0'}
-            `}>
-              {currentPosition === index ? currentWord : ''}
+              ${currentPosition === index ? "opacity-100" : "opacity-0"}
+            `}
+            >
+              {currentPosition === index ? currentWord : ""}
             </span>
           </div>
         ))}
@@ -158,11 +179,10 @@ const SpeedReadingTrainer = ({ onComplete }) => {
       <div className="space-y-6">
         <div className="text-center">
           <div className="font-medium text-gray-700">
-            Velocità attuale: <span className="text-blue-600 font-bold">{wpm} WPM</span>
+            Velocità attuale:{" "}
+            <span className="text-blue-600 font-bold">{wpm} WPM</span>
           </div>
-          <div className="text-sm text-gray-500">
-            {getSpeedLevel()}
-          </div>
+          <div className="text-sm text-gray-500">{getSpeedLevel()}</div>
         </div>
 
         {isAsking && (
@@ -187,10 +207,12 @@ const SpeedReadingTrainer = ({ onComplete }) => {
         )}
 
         {result && (
-          <div className={`
+          <div
+            className={`
             text-center p-3 rounded-lg font-medium
-            ${result.includes("Corretto") ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}
-          `}>
+            ${result.includes("Corretto") ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}
+          `}
+          >
             {result}
           </div>
         )}
@@ -201,7 +223,7 @@ const SpeedReadingTrainer = ({ onComplete }) => {
             className="px-6 py-2 bg-blue-600 text-white rounded-lg
                      hover:bg-blue-700 transition-colors font-medium"
           >
-            {isRunning ? 'Ricomincia' : 'Inizia'}
+            {isRunning ? "Ricomincia" : "Inizia"}
           </button>
           {isRunning && (
             <button

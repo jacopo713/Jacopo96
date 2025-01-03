@@ -1,0 +1,46 @@
+{
+  "parser": "@typescript-eslint/parser", // Usa il parser di TypeScript
+  "plugins": [
+    "@typescript-eslint", // Plugin per TypeScript
+    "prettier"            // Plugin per Prettier
+  ],
+  "extends": [
+    "eslint:recommended", // Regole consigliate di ESLint
+    "plugin:@typescript-eslint/recommended", // Regole consigliate per TypeScript
+    "plugin:react/recommended", // Regole consigliate per React
+    "plugin:prettier/recommended" // Integra Prettier con ESLint
+  ],
+  "rules": {
+    // Regole di ESLint
+    "no-console": "warn", // Avvisa se viene usato `console.log`
+    "no-unused-vars": "error", // Segnala variabili non utilizzate
+    "react/prop-types": "off", // Disabilita la verifica dei prop types (utile con TypeScript)
+
+    // Regole di TypeScript
+    "@typescript-eslint/explicit-module-boundary-types": "error", // Richiede tipi espliciti per le funzioni esportate
+    "@typescript-eslint/no-explicit-any": "warn", // Avvisa se viene usato `any`
+
+    // Regole di Prettier
+    "prettier/prettier": [
+      "error",
+      {
+        "semi": true, // Usa i punti e virgola
+        "singleQuote": true, // Usa apici singoli
+        "trailingComma": "es5", // Aggiungi virgole finali (ES5)
+        "printWidth": 80, // Larghezza massima della riga
+        "tabWidth": 2, // Dimensione del tab
+        "endOfLine": "auto" // Gestisce automaticamente la fine della riga
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect" // Rileva automaticamente la versione di React
+    }
+  },
+  "env": {
+    "browser": true, // Abilita le variabili globali del browser
+    "node": true, // Abilita le variabili globali di Node.js
+    "es2021": true // Abilita le funzionalità di ES2021
+  }
+}
